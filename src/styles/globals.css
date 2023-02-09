@@ -19,3 +19,7 @@ body,
   height: 100%;
   overflow: hidden;
 }
+
+.label {
+  @apply flex h-[50px] w-[200px] items-center justify-center rounded-full bg-black/20 text-black;
+}

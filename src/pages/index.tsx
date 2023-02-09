@@ -1,26 +1,24 @@
-import { useTheme } from "next-themes";
+import { Canvas } from "@react-three/fiber";
 import React from "react";
+import { ACESFilmicToneMapping, sRGBEncoding } from "three";
+import SphereGeometry from "../Geometries/SphereGeometry";
 
 interface indexProps {}
-const Index: React.FC<indexProps> = (props) => {
-  const { theme, setTheme } = useTheme();
-  console.log(props);
-
+const Index: React.FC<indexProps> = () => {
   return (
-    <div>
-      <h1
-        className="text-3xl text-pink-500"
-        style={{ backgroundColor: "teal" }}
-      >
-        Welcome to Your App
-      </h1>
-      <button
-        onClick={() => {
-          setTheme(theme == "dark" ? "light" : "dark");
+    <div className="relative h-screen w-screen">
+      <Canvas
+        // setting pixel ratio by forcedly
+        dpr={1}
+        gl={{
+          antialias: true,
+          toneMapping: ACESFilmicToneMapping,
+          outputEncoding: sRGBEncoding,
         }}
+        camera={{ position: [3, 2, 6], near: 0.1, far: 200, fov: 45 }}
       >
-        toggle
-      </button>
+        <SphereGeometry />
+      </Canvas>
     </div>
   );
 };

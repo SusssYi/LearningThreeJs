@@ -2,7 +2,6 @@ import type { MeshProps } from "@react-three/fiber";
 import { extend, useFrame, useThree } from "@react-three/fiber";
 import React, { useRef } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import CustomObject from "./CustomObject";
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -19,12 +18,6 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
   const { camera, gl } = useThree();
 
   useFrame((state, delta) => {
-    const angle = state.clock.elapsedTime;
-
-    state.camera.position.x = Math.sin(angle);
-    state.camera.position.z = Math.cos(angle);
-    state.camera.lookAt(0, 0, 0);
-
     if (cubeRef.current?.rotation) {
       cubeRef.current.rotation.y += delta;
     }
@@ -35,11 +28,11 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
       <directionalLight position={[1, 2, 3]} />
       <ambientLight />
       <group>
-        <mesh position-x={-1.0} rotation-y={1}>
+        <mesh position-x={-2.0} rotation-y={1}>
           <sphereGeometry />
           <meshStandardMaterial color="red" />
         </mesh>
-        <mesh ref={cubeRef} rotation={[0, Math.PI * 0.28, 0]} position-x={1}>
+        <mesh ref={cubeRef} rotation={[0, Math.PI * 0.28, 0]} position-x={2}>
           <boxGeometry />
           <meshStandardMaterial color="skyblue" />
         </mesh>
@@ -48,7 +41,6 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
         <planeGeometry />
         <meshStandardMaterial color="greenyellow" />
       </mesh>
-      <CustomObject />
     </>
   );
 };

@@ -1,30 +1,15 @@
-import type { MeshProps } from "@react-three/fiber";
-import { extend, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, TransformControls } from "@react-three/drei";
 import React, { useRef } from "react";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      orbitControls: any;
-    }
-  }
-}
+import type { Mesh } from "three";
 
-extend({ OrbitControls });
 interface SphereGeometryProps {}
 
 const SphereGeometry: React.FC<SphereGeometryProps> = () => {
-  const cubeRef = useRef<MeshProps | any>();
-  const { camera, gl } = useThree();
+  const cubeRef = useRef<Mesh>(null!);
 
-  useFrame((state, delta) => {
-    if (cubeRef.current?.rotation) {
-      cubeRef.current.rotation.y += delta;
-    }
-  });
   return (
     <>
-      <orbitControls args={[camera, gl.domElement]} />
+      <OrbitControls makeDefault />
       <directionalLight position={[1, 2, 3]} />
       <ambientLight />
       <group>
@@ -36,6 +21,7 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
           <boxGeometry />
           <meshStandardMaterial color="skyblue" />
         </mesh>
+        <TransformControls object={cubeRef} />
       </group>
       <mesh rotation-x={-Math.PI * 0.5} scale={10} position-y={-1}>
         <planeGeometry />
@@ -44,4 +30,5 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
     </>
   );
 };
+
 export default SphereGeometry;

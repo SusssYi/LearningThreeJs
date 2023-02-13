@@ -1,12 +1,15 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
-import type { Mesh } from "three";
+import type { DirectionalLight, Mesh } from "three";
+import { DirectionalLightHelper } from "three";
 
 interface SphereGeometryProps {}
 
 const SphereGeometry: React.FC<SphereGeometryProps> = () => {
   const cubeRef = useRef<Mesh>(null!);
+  const directionLightRef = useRef<DirectionalLight>(null!);
+  useHelper(directionLightRef, DirectionalLightHelper);
 
   useFrame((state, delta) => {
     if (cubeRef.current.rotation.y) {
@@ -15,8 +18,10 @@ const SphereGeometry: React.FC<SphereGeometryProps> = () => {
   });
   return (
     <>
+      <color args={["ivory"]} attach="background" />
+
       <OrbitControls makeDefault />
-      <directionalLight position={[1, 2, 3]} />
+      <directionalLight ref={directionLightRef} position={[1, 2, 3]} />
       <ambientLight />
       <group>
         <mesh rotation-y={1} position-x={2}>

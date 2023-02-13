@@ -1,47 +1,68 @@
-import { OrbitControls, useHelper } from "@react-three/drei";
+import { OrbitControls, softShadows, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useRef } from "react";
+import { Perf } from "r3f-perf";
+import { useRef } from "react";
 import type { DirectionalLight, Mesh } from "three";
-import { DirectionalLightHelper } from "three";
+import * as THREE from "three";
 
-interface SphereGeometryProps {}
+softShadows({
+  frustum: 3.75,
+  size: 0.005,
+  near: 9.5,
+  samples: 17,
+  rings: 11,
+});
 
-const SphereGeometry: React.FC<SphereGeometryProps> = () => {
-  const cubeRef = useRef<Mesh>(null!);
-  const directionLightRef = useRef<DirectionalLight>(null!);
-  useHelper(directionLightRef, DirectionalLightHelper);
+export default function Experience() {
+  const cube = useRef<Mesh>(null!);
+  const directionalLight = useRef<DirectionalLight>(null!);
+  useHelper(directionalLight, THREE.DirectionalLightHelper, 1);
 
   useFrame((state, delta) => {
-    if (cubeRef.current.rotation.y) {
-      cubeRef.current.rotation.y += delta * 0.2;
-    }
+    // const time = state.clock.elapsedTime
+    // cube.current.position.x = 2 + Math.sin(time)
+    cube.current.rotation.y += delta * 0.2;
   });
+
   return (
     <>
       <color args={["ivory"]} attach="background" />
 
+      {/* <BakeShadows /> */}
+
+      <Perf position="top-left" />
+
       <OrbitControls makeDefault />
-      <directionalLight ref={directionLightRef} position={[1, 2, 3]} />
-      <ambientLight />
-      <group>
-        <mesh rotation-y={1} position-x={2}>
-          <sphereGeometry />
-          <meshStandardMaterial color="red" />
-        </mesh>
-        <mesh
-          rotation={[0, Math.PI * 0.28, 0]}
-          position={[-2, 0, 0]}
-          ref={cubeRef}
-        >
-          <boxGeometry />
-          <meshStandardMaterial color="skyblue" />
-        </mesh>
-      </group>
-      <mesh rotation-x={-Math.PI * 0.5} scale={10} position-y={-1}>
+
+      <directionalLight
+        ref={directionalLight}
+        position={[1, 2, 3]}
+        intensity={1}
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+        shadow-camera-near={1}
+        shadow-camera-far={10}
+        shadow-camera-top={5}
+        shadow-camera-right={5}
+        shadow-camera-bottom={-5}
+        shadow-camera-left={-5}
+      />
+      <ambientLight intensity={0.5} />
+
+      <mesh castShadow position-y={1} position-x={-2}>
+        <sphereGeometry />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+
+      <mesh castShadow ref={cube} position-y={1} position-x={2} scale={1.5}>
+        <boxGeometry />
+        <meshStandardMaterial color="mediumpurple" />
+      </mesh>
+
+      <mesh receiveShadow position-y={0} rotation-x={-Math.PI * 0.5} scale={10}>
         <planeGeometry />
-        <meshBasicMaterial color={"yellowgreen"} />
+        <meshStandardMaterial color="greenyellow" />
       </mesh>
     </>
   );
-};
-export default SphereGeometry;
+}

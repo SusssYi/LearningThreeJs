@@ -1,14 +1,13 @@
 import { Canvas } from "@react-three/fiber";
-import { Perf } from "r3f-perf";
 import React from "react";
-import SphereGeometry from "../Geometries/SphereGeometry";
+import Scene from "../Geometries/Scene";
 
 interface indexProps {}
 const Index: React.FC<indexProps> = () => {
   return (
     <div className="relative h-screen w-screen">
       <Canvas
-        shadows={true}
+        shadows={false}
         camera={{
           fov: 45,
           near: 0.1,
@@ -16,8 +15,7 @@ const Index: React.FC<indexProps> = () => {
           position: [-4, 3, 6],
         }}
       >
-        <Perf position="top-left" />
-        <SphereGeometry />
+        <Scene />
       </Canvas>
     </div>
   );

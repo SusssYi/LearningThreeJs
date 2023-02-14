@@ -1,6 +1,7 @@
 import {
   ContactShadows,
   Environment,
+  Lightformer,
   OrbitControls,
   useHelper,
 } from "@react-three/drei";
@@ -39,9 +40,16 @@ export default function Experience() {
       step: 0.01,
     },
   });
-  const { sunPosition } = useControls("sky", {
-    sunPosition: {
-      value: [1, 2, 3],
+  // const { sunPosition } = useControls("sky", {
+  //   sunPosition: {
+  //     value: [1, 2, 3],
+  //   },
+  // });
+  const { environmentIntensity } = useControls("environmentMaps", {
+    environmentIntensity: {
+      value: 1,
+      min: 0,
+      max: 10,
     },
   });
 
@@ -52,15 +60,25 @@ export default function Experience() {
   return (
     <>
       <Environment
-        files={[
-          "/environmentMaps/2/px.jpg",
-          "/environmentMaps/2/nx.jpg",
-          "/environmentMaps/2/py.jpg",
-          "/environmentMaps/2/ny.jpg",
-          "/environmentMaps/2/pz.jpg",
-          "/environmentMaps/2/nz.jpg",
-        ]}
-      />
+        background
+        preset="sunset"
+        resolution={1250}
+        // files={"/environmentMaps/the_sky_is_on_fire_2k.hdr"}
+      >
+        <color args={["black"]} attach="background" />
+        <Lightformer
+          scale={10}
+          position-z={-5}
+          color={"red"}
+          intensity={10}
+          form="ring"
+        />
+        {/* <mesh position-z={-5} scale={10}>
+          <planeGeometry />
+          <meshBasicMaterial color={[100, 0, 0]} />
+        </mesh> */}
+      </Environment>
+
       <color args={["ivory"]} attach="background" />
       {/* <Sky sunPosition={sunPosition} /> */}
 
@@ -112,17 +130,26 @@ export default function Experience() {
 
       <mesh castShadow position-y={1} position-x={-2}>
         <sphereGeometry />
-        <meshStandardMaterial color="orange" />
+        <meshStandardMaterial
+          color="orange"
+          envMapIntensity={environmentIntensity}
+        />
       </mesh>
 
       <mesh castShadow ref={cube} position-y={1} position-x={2} scale={1.5}>
         <boxGeometry />
-        <meshStandardMaterial color="mediumpurple" />
+        <meshStandardMaterial
+          color="mediumpurple"
+          envMapIntensity={environmentIntensity}
+        />
       </mesh>
 
       <mesh position-y={-0.02} rotation-x={-Math.PI * 0.5} scale={10}>
         <planeGeometry />
-        <meshStandardMaterial color="greenyellow" />
+        <meshStandardMaterial
+          color="greenyellow"
+          envMapIntensity={environmentIntensity}
+        />
       </mesh>
     </>
   );

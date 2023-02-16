@@ -13,7 +13,7 @@ const Fox = (props: MeshProps) => {
     const action = animations.actions[animationName];
     if (action) {
       //  add new animations fadeIn
-      action.fadeIn(0.5).play();
+      action.reset().fadeIn(0.5).play();
     }
 
     return () => {

@@ -1,6 +1,6 @@
 import { Center } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import Portal from "../Geometries/Portal";
+import Scene from "../Geometries/Scene";
 const Index = () => {
   return (
     <div className="relative h-screen w-screen">
@@ -15,7 +15,7 @@ const Index = () => {
         }}
       >
         <Center>
-          <Portal />
+          <Scene />
         </Center>
       </Canvas>
     </div>

@@ -1,52 +1,43 @@
-import {
-  ContactShadows,
-  OrbitControls,
-  Stage,
-  useHelper,
-} from "@react-three/drei";
+import { OrbitControls, Stage, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
-import { Suspense, useRef } from "react";
-import type { DirectionalLight } from "three";
+import { useRef } from "react";
+import type { DirectionalLight, Mesh } from "three";
 import * as THREE from "three";
-import Fox from "./Fox";
-import PlaceHolder from "./PlaceHolder";
-
-// softShadows({
-//   frustum: 3.75,
-//   size: 0.005,
-//   near: 9.5,
-//   samples: 17,
-//   rings: 11,
-// });
 
 export default function Experience() {
   const directionalLight = useRef<DirectionalLight>(null!);
   useHelper(directionalLight, THREE.DirectionalLightHelper, 1);
+  const boxRef = useRef<Mesh>(null!);
 
-  useFrame((state, delta) => {});
+  useFrame((state, delta) => {
+    if (boxRef.current.rotation) {
+      boxRef.current.rotation.y += delta;
+    }
+  });
 
   return (
-    <>
+    <Stage shadows={false}>
       <Perf position="top-left" />
       <OrbitControls makeDefault />
-      <ContactShadows position-y={-0.99} />
       <directionalLight
         ref={directionalLight}
         position={[1, 2, 3]}
         intensity={1.5}
-        shadow-normalBias={0.04}
       />
 
+      <mesh ref={boxRef} position-x={1}>
+        <boxGeometry />
+        <meshStandardMaterial color={"orange"} />
+      </mesh>
+      <mesh position-x={-1}>
+        <sphereGeometry />
+        <meshStandardMaterial color={"red"} />
+      </mesh>
       <mesh position-y={-1} rotation-x={-Math.PI * 0.5} scale={10}>
         <planeGeometry />
         <meshStandardMaterial color={"yellowgreen"} />
       </mesh>
-      <Stage>
-        <Suspense fallback={<PlaceHolder />}>
-          <Fox scale={1} />
-        </Suspense>
-      </Stage>
-    </>
+    </Stage>
   );
 }

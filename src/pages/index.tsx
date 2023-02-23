@@ -1,12 +1,11 @@
+import { Center } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import React from "react";
-import Scene from "../Geometries/Scene";
-
-interface indexProps {}
-const Index: React.FC<indexProps> = () => {
+import Portal from "../Geometries/Portal";
+const Index = () => {
   return (
     <div className="relative h-screen w-screen">
       <Canvas
+        flat
         shadows={false}
         camera={{
           fov: 45,
@@ -15,7 +14,9 @@ const Index: React.FC<indexProps> = () => {
           position: [-4, 3, 6],
         }}
       >
-        <Scene />
+        <Center>
+          <Portal />
+        </Center>
       </Canvas>
     </div>
   );

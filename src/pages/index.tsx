@@ -1,6 +1,14 @@
-import { Center } from "@react-three/drei";
+import { Center, Html, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import Scene from "../Geometries/Scene";
+import { Suspense } from "react";
+import Drunk from "../Geometries/Drunk";
+
+const Loader = () => {
+  const { progress } = useProgress();
+  console.log(progress);
+
+  return <Html>curren Progress : {progress}%</Html>;
+};
 const Index = () => {
   return (
     <div className="relative h-screen w-screen">
@@ -15,7 +23,9 @@ const Index = () => {
         }}
       >
         <Center>
-          <Scene />
+          <Suspense fallback={<Loader />}>
+            <Drunk />
+          </Suspense>
         </Center>
       </Canvas>
     </div>

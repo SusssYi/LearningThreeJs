@@ -1,4 +1,10 @@
-import { OrbitControls, Stage, useHelper } from "@react-three/drei";
+import {
+  ContactShadows,
+  OrbitControls,
+  Stage,
+  useHelper,
+} from "@react-three/drei";
+import type { ThreeEvent } from "@react-three/fiber";
 import { useFrame } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 import { useRef } from "react";
@@ -10,6 +16,9 @@ export default function Experience() {
   useHelper(directionalLight, THREE.DirectionalLightHelper, 1);
   const boxRef = useRef<Mesh>(null!);
 
+  const handleOnClick = (e: ThreeEvent<MouseEvent>) => {
+    boxRef.current.material.color.set(`hsl(${Math.random() * 360},100%,75%)`);
+  };
   useFrame((state, delta) => {
     if (boxRef.current.rotation) {
       boxRef.current.rotation.y += delta;
@@ -19,6 +28,7 @@ export default function Experience() {
   return (
     <Stage shadows={false}>
       <Perf position="top-left" />
+      <ContactShadows />
       <OrbitControls makeDefault />
       <directionalLight
         ref={directionalLight}
@@ -26,11 +36,16 @@ export default function Experience() {
         intensity={1.5}
       />
 
-      <mesh ref={boxRef} position-x={1}>
+      <mesh ref={boxRef} position-x={1} onClick={handleOnClick}>
         <boxGeometry />
-        <meshStandardMaterial color={"orange"} />
+        <meshStandardMaterial color={"green"} />
       </mesh>
-      <mesh position-x={-1}>
+      <mesh
+        position-x={-1}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <sphereGeometry />
         <meshStandardMaterial color={"red"} />
       </mesh>

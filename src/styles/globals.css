@@ -20,6 +20,17 @@ body,
   overflow: hidden;
 }
 
+canvas {
+  touch-action: none;
+}
+.htmlScreen iframe {
+  width: 1024px;
+  height: 670px;
+  overflow-y: hidden;
+  border: none;
+  border-radius: 20px;
+  background: #000;
+}
 .label {
   @apply flex h-[50px] w-[200px] items-center justify-center rounded-full bg-black/20 text-black;
 }

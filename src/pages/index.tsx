@@ -1,7 +1,8 @@
-import { Center, Html, useProgress } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import Drunk from "../Geometries/Drunk";
+
+import SceneComponents from "../Geometries/Scene";
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -13,7 +14,6 @@ const Index = () => {
   return (
     <div className="relative h-screen w-screen">
       <Canvas
-        flat
         shadows={false}
         camera={{
           fov: 45,
@@ -22,11 +22,9 @@ const Index = () => {
           position: [-4, 3, 6],
         }}
       >
-        <Center>
-          <Suspense fallback={<Loader />}>
-            <Drunk />
-          </Suspense>
-        </Center>
+        <Suspense fallback={<Loader />}>
+          <SceneComponents />
+        </Suspense>
       </Canvas>
     </div>
   );

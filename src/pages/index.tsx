@@ -6,7 +6,6 @@ import SceneComponents from "../Geometries/Scene";
 
 const Loader = () => {
   const { progress } = useProgress();
-  console.log(progress);
 
   return <Html>curren Progress : {progress}%</Html>;
 };
